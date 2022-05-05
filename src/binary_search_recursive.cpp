@@ -6,13 +6,32 @@
 
 namespace assignment {
 
-  std::optional<int> BinarySearchRecursive::Search(const std::vector<int>& arr, int search_elem) const {
+  std::optional<int> BinarySearchRecursive::Search(const std::vector<int>& data, int search_element) const {
     // запускаем рекурсивный метод с границами поиска от начала массива до конца
-    return search(arr, search_elem, 0, static_cast<int>(arr.size() - 1));
+    return recursive_helper(data, search_element, 0, static_cast<int>(data.size() - 1));
   }
 
-  std::optional<int> BinarySearchRecursive::search(const std::vector<int>& arr, int search_elem, int start, int stop) const {
+  std::optional<int> BinarySearchRecursive::recursive_helper(const std::vector<int>& data, int search_element,
+                                                             int left_index, int right_index) const {
 
+    if (right_index - left_index<= 1) {
+      if (right_index < left_index) {
+        return std::nullopt;
+      }
+      if (data[left_index] == search_element) {
+        return left_index;
+      }
+      if (data[right_index] == search_element) {
+        return right_index;
+      }
+      return std::nullopt;
+    }
+    int m = (left_index + right_index) / 2;
+    if (data[m] < search_element) {
+      return recursive_helper(data, search_element, m, right_index);
+    } else {
+      return recursive_helper(data, search_element, left_index, m);
+    }
     // Tips:
     // 1. Рассмотрите базовые случаи выхода и рекурсии:
     //    1) индекс левого элемента стал больше индекса правого элемента
